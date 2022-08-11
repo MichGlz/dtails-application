@@ -15,9 +15,10 @@
 
   {%- assign preview_image = product.featured_media.preview_image -%}
   {%- assign img_url = preview_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+  {%- assign hover_img_url = product.images[1] | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
 
   <div class="product-card__image-with-placeholder-wrapper" data-image-loading-animation>
-    <div class="grid-view-item__image-wrapper product-card__image-wrapper js">
+    <div class="grid-view-item__image-wrapper product-card__image-wrapper js reveal">
       <div style="padding-top:{% unless preview_image == blank %}{{ 1 | divided_by: preview_image.aspect_ratio | times: 100 }}%{% else %}100%{% endunless %};">
         <img class="grid-view-item__image lazyload"
               alt="{{ preview_image.alt }}"
@@ -26,6 +27,14 @@
               data-aspectratio="{{ preview_image.aspect_ratio }}"
               data-sizes="auto"
               data-image>
+        <img class="grid-view-item__image lazyload hidden"
+              alt="{{ product.images[1].alt }}"
+              data-src="{{ hover_img_url }}"
+              data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+              data-aspectratio="{{ product.images[1].aspect_ratio }}"
+              data-sizes="auto"
+              data-image>      
+              
       </div>
     </div>
   </div>
