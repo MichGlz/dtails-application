@@ -1,3 +1,62 @@
+<style>
+
+.product-card:hover .onhover img {
+  opacity: 1;
+}
+.onhover {
+  position: relative;
+}
+.onhover .hidden {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  -webkit-transition: opacity 0.4s ease-in-out;
+  -moz-transition: opacity 0.4s ease-in-out;
+  -o-transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
+}
+.product-card:hover .hidden {
+  z-index: 8;
+  opacity: 1;
+}
+
+.onsale {
+  position: absolute;
+  /* background-color: #cb2027;
+  border-radius: 50%;
+  padding: 1rem; */
+  width: 3rem;
+  z-index: 100;
+  bottom: 0;
+  right: -1rem;
+}
+.circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.text {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.2rem;
+  color: white;
+}
+
+.currency_wrapper{
+  display:flex;
+  padding:0 2rem;
+  gap:1rem;
+  align-items:center;
+  margin-right:0;
+  justify-content: flex-end;
+}
+
+</style>
+
 {% case section.settings.grid %}
   {% when 2 %}
     {%- assign max_height = 530 -%}
@@ -123,9 +182,18 @@
         </div>
       </div>
     {% endif %}
+  <div class="currency_wrapper">  
+  <label for="currency">currency</label>
+  <select name="currency" id="currency">
+  <option value="DKK">DKK</option>
+  <option value="USD">USD</option>
+  </select>
+  </div>
   </header>
 
   <div class="page-width" id="Collection">
+  
+
     {% if section.settings.layout == 'grid' %}
       {% case section.settings.grid %}
       {% when 2 %}
@@ -237,19 +305,88 @@
 
 <script>
 
-var myHeaders = new Headers();
-myHeaders.append("apikey", "Fpk795H417rWuNKxRDdlBNRotMdPGfzI");
+/*check if is a preselected currency*/
+  if(!localStorage.getItem('currency')){
+    localStorage.setItem('currency','DKK');
+  }
 
-var requestOptions = {
-  method: 'GET',
-  redirect: 'follow',
-  headers: myHeaders
-};
+/*declaration of variables*/
 
-fetch("https://api.apilayer.com/exchangerates_data/convert?to=USD&from=DKK&amount=1", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+  let currencyRate;
+  let currency=localStorage.getItem('currency');
+
+document.querySelectorAll("span[class^='price-item price-item--']").forEach((element) => {
+    
+        if(element.textContent){
+        element.dataset.regprice=element.textContent;
+        element.dataset.actprice="true";
+
+        }
+
+        });
+    
+
+/*geting currency rate with an API*/
+  const myHeaders = new Headers();
+  myHeaders.append("apikey", "Fpk795H417rWuNKxRDdlBNRotMdPGfzI");
+
+  const requestOptions = {
+    method: 'GET',
+    redirect: 'follow',
+    headers: myHeaders
+  };
+
+  fetch("https://api.apilayer.com/exchangerates_data/convert?to=USD&from=DKK&amount=1", requestOptions)
+    .then(res => res.json())
+    .then(res => {
+      console.log(res);
+      currencyRate=res.result;
+      console.log(currencyRate);
+      addUSDPrice();
+      })
+    .catch(error => console.log('error', error));
+
+  /*selecting and adding properties to the currency selector*/
+  
+  const currencySelector=document.querySelector("#currency");
+
+  currencySelector.value=currency;
+
+  currencySelector.addEventListener("change",(e)=>{
+    console.log(e.target.value);
+    localStorage.setItem('currency',e.target.value);
+    changePrices(e.target.value);
+  });
+
+  
+
+ function addUSDPrice(){
+    console.log("addUSDPrice");
+    document.querySelectorAll('[data-actprice="true"]').forEach((element) => {
+    let price=element.textContent;
+    let usdPrice = price.split(" ")[0].split(",").join("");
+    usdPrice=(Number(usdPrice)/100)*currencyRate;
+    usdPrice=Math.floor(usdPrice * 100) / 100
+    element.dataset.usdprice=`${usdPrice} USD`;
+       });
+    if(localStorage.getItem('currency')==="USD"){
+      changePrices("USD");
+    }   
+ } 
+
+ function changePrices(value){
+
+  document.querySelectorAll('[data-actprice="true"]').forEach((element) => {
+      
+      if(value==="DKK"){
+         element.textContent=element.dataset.regprice;
+      }else{
+        element.textContent=element.dataset.usdprice;
+      }
+        
+      });
+
+ }
 
 </script>
 
