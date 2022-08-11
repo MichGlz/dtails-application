@@ -18,7 +18,7 @@
   {%- assign hover_img_url = product.images[1] | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
 
   <div class="product-card__image-with-placeholder-wrapper" data-image-loading-animation>
-    <div class="grid-view-item__image-wrapper product-card__image-wrapper js reveal">
+    <div class="grid-view-item__image-wrapper product-card__image-wrapper js onhover">
       <div style="padding-top:{% unless preview_image == blank %}{{ 1 | divided_by: preview_image.aspect_ratio | times: 100 }}%{% else %}100%{% endunless %};">
         <img class="grid-view-item__image lazyload"
               alt="{{ preview_image.alt }}"
@@ -36,7 +36,16 @@
               data-image>      
               
       </div>
+    
+    <div class="onsale">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="circle" style="fill:red">
+  <circle cx="50" cy="50" r="50"/>
+    </svg>
+       <p class="text">sale<p>
     </div>
+
+    </div>
+    
   </div>
 
   <noscript>

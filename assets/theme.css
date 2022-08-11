@@ -8910,13 +8910,13 @@ hr {
 
 /* css added */
 
-.product-card:hover .reveal img {
+.product-card:hover .onhover img {
   opacity: 1;
 }
-.reveal {
+.onhover {
   position: relative;
 }
-.reveal .hidden {
+.onhover .hidden {
   position: absolute;
   z-index: -1;
   top: 0;
@@ -8929,6 +8929,29 @@ hr {
   transition: opacity 0.4s ease-in-out;
 }
 .product-card:hover .hidden {
-  z-index: 100000;
+  z-index: 8;
   opacity: 1;
+}
+
+.onsale {
+  position: absolute;
+  /* background-color: #cb2027;
+  border-radius: 50%;
+  padding: 1rem; */
+  width: 3rem;
+  z-index: 100;
+  bottom: 0;
+  right: -1rem;
+}
+.circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.text {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.2rem;
+  color: white;
 }
