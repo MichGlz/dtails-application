@@ -1,12 +1,12 @@
 <style>
 
-.product-card:hover .onhover img {
+.product-card:hover .product-card__image-wrapper {
   opacity: 1;
 }
-.onhover {
+.product-card__image-wrapper {
   position: relative;
 }
-.onhover .hidden {
+.product-card__image-wrapper .product-card__image-hidden {
   position: absolute;
   z-index: -1;
   top: 0;
@@ -17,8 +17,9 @@
   -moz-transition: opacity 0.4s ease-in-out;
   -o-transition: opacity 0.4s ease-in-out;
   transition: opacity 0.4s ease-in-out;
+  cursor:pointer;
 }
-.product-card:hover .hidden {
+.product-card:hover .product-card__image-hidden {
   z-index: 8;
   opacity: 1;
 }
@@ -316,14 +317,11 @@
   let currency=localStorage.getItem('currency');
 
 document.querySelectorAll("span[class^='price-item price-item--']").forEach((element) => {
-    
-        if(element.textContent){
-        element.dataset.regprice=element.textContent;
-        element.dataset.actprice="true";
-
-        }
-
-        });
+  if(element.textContent){
+  element.dataset.regprice=element.textContent;
+  element.dataset.actprice="true";
+  }
+});
     
 
 /*geting currency rate with an API*/
