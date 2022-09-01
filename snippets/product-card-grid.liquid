@@ -38,18 +38,13 @@
       </div>
     
     {% if product.compare_at_price > product.price %}
-       <div class="onsale">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="circle" style="fill:red">
+       <div class="badge--onsale">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="badge__circle" style="fill:red">
           <circle cx="50" cy="50" r="50"/>
         </svg>
-        <p class="text">sale<p>
+        <p class="badge__text">sale<p>
        </div>
-       <style>
-       .price__badge--sale{
-        opacity:0;
-       }
-       </style>
-   {% endif %}
+    {% endif %}
 
    
 

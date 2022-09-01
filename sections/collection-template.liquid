@@ -24,27 +24,34 @@
   opacity: 1;
 }
 
-.onsale {
+.price__badge--sale{
+  opacity:0;
+ }
+
+.badge--onsale{
   position: absolute;
-  /* background-color: #cb2027;
-  border-radius: 50%;
-  padding: 1rem; */
   width: 3rem;
+  height:3rem;
   z-index: 100;
-  bottom: 0;
+  top: 0;
   right: -1rem;
+  
 }
-.circle {
+.badge__circle {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.text {
+.badge__text {
   position: absolute;
-  top: 0.5rem;
-  left: 0.2rem;
+  display:block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   color: white;
+  font-weight: 500;
+  letter-spacing: 0.1rem;
 }
 
 .currency_wrapper{
