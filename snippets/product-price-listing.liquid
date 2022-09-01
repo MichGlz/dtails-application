@@ -57,7 +57,7 @@
       <span class="visually-hidden visually-hidden--inline">{{ 'products.product.regular_price' | t }}</span>
     </dt>
     <dd>
-      <span class="price-item price-item--regular">
+      <span class="price-item price-item--regular"  data-dkkprice = "{{product.price}}">
         {%- if product.price_varies -%}
           {{ 'products.product.from_lowest_price_html' | t: lowest_price: money_price }}
         {%- else -%}
@@ -71,7 +71,7 @@
       <span class="visually-hidden visually-hidden--inline">{{ 'products.product.sale_price' | t }}</span>
     </dt>
     <dd>
-      <span class="price-item price-item--sale">
+      <span class="price-item price-item--sale" data-dkkprice = "{{product.price}}">
         {%- if product.price_varies -%}
           {{ 'products.product.from_lowest_price_html' | t: lowest_price: money_price }}
         {%- else -%}
@@ -84,7 +84,7 @@
         <span class="visually-hidden visually-hidden--inline">{{ 'products.product.regular_price' | t }}</span>
       </dt>
       <dd>
-        <s class="price-item price-item--regular">
+        <s class="price-item price-item--regular" data-dkkprice = "{{product.compare_at_price}}">
           {%- if settings.currency_code_enabled -%}
             {{ compare_at_price | money_with_currency }}
           {%- else -%}

@@ -56,12 +56,6 @@
 
 .currency_wrapper{
  margin-left:48px;
-  {% comment %} display:flex;
-  padding:0 2rem;
-  gap:1rem;
-  align-items:center;
-  margin-right:0;
-  justify-content: flex-end; {% endcomment %}
 } 
 
 </style>
@@ -318,7 +312,8 @@
 
 
 <script>
-
+  
+function startCurrency(){
 /*check if is a preselected currency*/
   if(!localStorage.getItem('currency')){
     localStorage.setItem('currency','DKK');
@@ -328,14 +323,6 @@
 
   let currencyRate;
   let currency=localStorage.getItem('currency');
-
-document.querySelectorAll("span[class^='price-item price-item--']").forEach((element) => {
-  if(element.textContent){
-  element.dataset.regprice=element.textContent;
-  element.dataset.actprice="true";
-  }
-});
-    
 
 /*geting currency rate with an API*/
   const myHeaders = new Headers();
@@ -347,12 +334,11 @@ document.querySelectorAll("span[class^='price-item price-item--']").forEach((ele
     headers: myHeaders
   };
 
+
   fetch("https://api.apilayer.com/exchangerates_data/convert?to=USD&from=DKK&amount=1", requestOptions)
     .then(res => res.json())
     .then(res => {
-      console.log(res);
       currencyRate=res.result;
-      console.log(currencyRate);
       addUSDPrice();
       })
     .catch(error => console.log('error', error));
@@ -364,7 +350,6 @@ document.querySelectorAll("span[class^='price-item price-item--']").forEach((ele
   currencySelector.value=currency;
 
   currencySelector.addEventListener("change",(e)=>{
-    console.log(e.target.value);
     localStorage.setItem('currency',e.target.value);
     changePrices(e.target.value);
   });
@@ -372,33 +357,35 @@ document.querySelectorAll("span[class^='price-item price-item--']").forEach((ele
   
 
  function addUSDPrice(){
-    console.log("addUSDPrice");
-    document.querySelectorAll('[data-actprice="true"]').forEach((element) => {
-    let price=element.textContent;
-    let usdPrice = price.split(" ")[0].split(",").join("");
-    usdPrice=(Number(usdPrice)/100)*currencyRate;
-    usdPrice=Math.floor(usdPrice * 100) / 100
-    element.dataset.usdprice=`${usdPrice} USD`;
-       });
+    document.querySelectorAll("[data-dkkprice]").forEach((element) => {
+    const dkkPrice=element.dataset.dkkprice;
+    const usdPrice= Math.round(Number(dkkPrice)*currencyRate);
+    element.dataset.usdprice=usdPrice;
+    });
     if(localStorage.getItem('currency')==="USD"){
       changePrices("USD");
-    }   
+    }  
  } 
 
  function changePrices(value){
-
-  document.querySelectorAll('[data-actprice="true"]').forEach((element) => {
+  document.querySelectorAll("[data-dkkprice]").forEach((element) => {
       
-      if(value==="DKK"){
-         element.textContent=element.dataset.regprice;
-      }else{
-        element.textContent=element.dataset.usdprice;
-      }
-        
-      });
+  if(value==="DKK"){
+    let price = (Number(element.dataset.dkkprice)/100).toFixed(2);
+    price = price.split(".").join(",");
+    price = price + " DKK";
+    element.textContent = price;
+  }else{
+    let price = (Number(element.dataset.usdprice)/100).toFixed(2);
+    price = price + " USD";
+    element.textContent = price;
+  }
+    
+  });
 
  }
-
+}
+startCurrency();
 </script>
 
 
