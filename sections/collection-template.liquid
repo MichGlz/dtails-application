@@ -55,13 +55,14 @@
 }
 
 .currency_wrapper{
-  display:flex;
+ margin-left:48px;
+  {% comment %} display:flex;
   padding:0 2rem;
   gap:1rem;
   align-items:center;
   margin-right:0;
-  justify-content: flex-end;
-}
+  justify-content: flex-end; {% endcomment %}
+} 
 
 </style>
 
@@ -90,7 +91,7 @@
     {%- if section.settings.tags_enable and collection.all_tags.size > 0 -%}
       {%- assign is_filter_by_available = true -%}
     {%- endif -%}
-
+   
     {% if section.settings.show_collection_image and collection.image %}
       <div class="collection-hero">
         <div class="collection-hero__image ratio-container lazyload js"
@@ -110,6 +111,7 @@
           </h1>
         </div>
       </div>
+      
       {% if is_filter_by_available == false and section.settings.sort_enable == false %}
         <div class="page-width">
           <span class="filters-toolbar__product-count">{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</span>
@@ -123,6 +125,7 @@
     {% else %}
       <div class="page-width">
         <div class="section-header text-center">
+          
           <h1>
               <span class="visually-hidden">{{ 'collections.general.collection_label' | t }}: </span>
               {{ collection.title }}
@@ -181,6 +184,15 @@
                   </div>
                 </div>
               {% endif %}
+
+              <div class="filters-toolbar__item-child currency_wrapper">  
+      <label for="currency" class="filters-toolbar__label select-label">CURRENCY</label>
+      <select name="currency" id="currency" class="filters-toolbar__input">
+      <option value="DKK">DKK</option>
+      <option value="USD">USD</option>
+      </select>
+      </div>
+
             </div>
 
             <div class="filters-toolbar__item filters-toolbar__item--count">
@@ -190,13 +202,7 @@
         </div>
       </div>
     {% endif %}
-  <div class="currency_wrapper">  
-  <label for="currency">currency</label>
-  <select name="currency" id="currency">
-  <option value="DKK">DKK</option>
-  <option value="USD">USD</option>
-  </select>
-  </div>
+  
   </header>
 
   <div class="page-width" id="Collection">
